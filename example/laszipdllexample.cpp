@@ -103,11 +103,11 @@ int main(int argc, char *argv[])
 
   // load LASzip DLL
 
-  if (laszip_load_dll())
-  {
-    fprintf(stderr,"DLL ERROR: loading LASzip DLL\n");
-    byebye(true, argc==1);
-  }
+  //if (laszip_load_dll())
+  //{
+  //  fprintf(stderr,"DLL ERROR: loading LASzip DLL\n");
+  //  byebye(true, argc==1);
+  //}
 
   // get version of LASzip DLL
 
@@ -882,11 +882,11 @@ int main(int argc, char *argv[])
 
   // unload LASzip DLL
 
-  if (laszip_unload_dll())
-  {
-    fprintf(stderr,"DLL ERROR: unloading LASzip DLL\n");
-    byebye(true, argc==1);
-  }
+  //if (laszip_unload_dll())
+  //{
+  //  fprintf(stderr,"DLL ERROR: unloading LASzip DLL\n");
+  //  byebye(true, argc==1);
+  //}
 
   return 0;
 }
