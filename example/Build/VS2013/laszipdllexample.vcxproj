@@ -91,31 +91,31 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
-    <OutDir>..\..\..\Build\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\..\..\lib\VS2013\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
