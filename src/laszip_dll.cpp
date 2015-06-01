@@ -1404,7 +1404,7 @@ laszip_open_writer(
       sprintf(laszip_dll->error, "writing header.system_identifier");
       return 1;
     }
-	if(strlen(laszip_dll->header.generating_software) == 0)
+	if(strlen(laszip_dll->header.generating_software) == 0) // Allow client to override generating_software string
 		sprintf(laszip_dll->header.generating_software, "LASzip DLL %d.%d r%d (%d)", LASZIP_VERSION_MAJOR, LASZIP_VERSION_MINOR, LASZIP_VERSION_REVISION, LASZIP_VERSION_BUILD_DATE);
 
     try { laszip_dll->streamout->putBytes((U8*)laszip_dll->header.generating_software, 32); } catch(...)
