@@ -64,6 +64,7 @@ typedef struct laszip_dll {
   I64 point_count_start_position;
   I64 number_of_points_by_return_start_position;
   I64 extended_point_count_start_position;
+  I64 _extended_number_of_points_by_return[15];
   I64 boundingbox_count_start_position;
   I64 point_offset_start_position;
   F64 box_min[3];
@@ -1404,7 +1405,7 @@ laszip_open_writer(
       sprintf(laszip_dll->error, "writing header.system_identifier");
       return 1;
     }
-	if(strlen(laszip_dll->header.generating_software) == 0) // Allow client to override generating_software string
+	if(strlen(laszip_dll->header.generating_software) == 0)
 		sprintf(laszip_dll->header.generating_software, "LASzip DLL %d.%d r%d (%d)", LASZIP_VERSION_MAJOR, LASZIP_VERSION_MINOR, LASZIP_VERSION_REVISION, LASZIP_VERSION_BUILD_DATE);
 
     try { laszip_dll->streamout->putBytes((U8*)laszip_dll->header.generating_software, 32); } catch(...)
@@ -1602,6 +1603,11 @@ laszip_open_writer(
           sprintf(laszip_dll->error, "writing header.number_of_extended_variable_length_records");
           return 1;
         }
+		try	{ laszip_dll->extended_point_count_start_position = laszip_dll->streamout->tell(); } catch ( ... )
+		{
+			sprintf( laszip_dll->error, "telling header.extended_point_count_start_position" );
+			return 1;
+		}
         try { laszip_dll->streamout->put64bitsLE((U8*)&(laszip_dll->header.extended_number_of_point_records)); } catch(...)
         {
           sprintf(laszip_dll->error, "writing header.extended_number_of_point_records");
@@ -1846,8 +1852,12 @@ laszip_open_writer(
     laszip_dll->npoints = laszip_dll->header.number_of_point_records;
     laszip_dll->p_count = 0;
 
-	for(int i=0; i<5; ++i);
+	for(int i=0; i<5; ++i)
 		laszip_dll->_number_of_points_by_return[i] = 0;
+
+	for ( int i = 0; i<15; ++i )
+		laszip_dll->_extended_number_of_points_by_return[i] = 0;
+
   }
   catch (...)
   {
@@ -1909,8 +1919,11 @@ laszip_write_point(
 
     laszip_dll->p_count++;
 	
-	laszip_U8 num = laszip_dll->point.return_number > 0 && laszip_dll->point.return_number < 6 ? laszip_dll->point.return_number-1 : 0;
-	laszip_dll->_number_of_points_by_return[num]++;
+	laszip_U8 num1_2 = laszip_dll->point.return_number > 0 && laszip_dll->point.return_number < 6 ? laszip_dll->point.return_number - 1 : 0;
+	laszip_U8 num1_4 = laszip_dll->point.return_number > 0 && laszip_dll->point.return_number < 16 ? laszip_dll->point.return_number - 1 : 0;
+
+	laszip_dll->_number_of_points_by_return[num1_2]++;
+	laszip_dll->_extended_number_of_points_by_return[num1_4]++;
 
 	update_boundingbox(laszip_dll);
   }
@@ -2029,7 +2042,7 @@ laszip_I32 update_header(laszip_dll_struct* laszip_dll)
 	// update extended point count
 	if( laszip_dll->extended_point_count_start_position > 0)
 	{
-		try { laszip_dll->streamout->seek(laszip_dll->boundingbox_count_start_position); } catch(...)
+		try { laszip_dll->streamout->seek(laszip_dll->extended_point_count_start_position); } catch(...)
 		{
 		  sprintf(laszip_dll->error, "seeking extended point count start postion error");
 		  return 1;
@@ -2040,9 +2053,17 @@ laszip_I32 update_header(laszip_dll_struct* laszip_dll)
 		  sprintf(laszip_dll->error, "writing header.extended_number_of_point_records");
 		  return 1;
 		}
+		for ( unsigned i = 0; i < 15; i++ )
+		{
+			try { laszip_dll->streamout->put64bitsLE( (U8*)&( laszip_dll->_extended_number_of_points_by_return[i] ) );	} catch ( ... )
+			{
+				sprintf( laszip_dll->error, "writing header.extended_number_of_points_by_return[%d]", i );
+				return 1;
+			}
+		}
 	}
 
-	// Get back to original position
+	// Get back to original positionreading header.extended_number_of_points_by_return[%d]
 	try { laszip_dll->streamout->seek(position); } catch(...)
 	{
 	  sprintf(laszip_dll->error, "seeking back to position failed");
