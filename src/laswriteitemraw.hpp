@@ -157,7 +157,7 @@ private:
   U32 number;
 };
 
-class LAStempWritePoint10
+class LAStempWritePoint10_old
 {
 public:
   I32 x;
@@ -185,6 +185,38 @@ public:
   // LASlib only
   U32 deleted_flag;
   F64 gps_time;
+};
+
+struct LAStempWritePoint10
+{
+	I32 x;
+	I32 y;
+	I32 z;
+	U16 intensity;
+	U8 return_number : 3;
+	U8 number_of_returns_of_given_pulse : 3;
+	U8 scan_direction_flag : 1;
+	U8 edge_of_flight_line : 1;
+	U8 classification;
+	I8 scan_angle_rank;
+	U8 user_data;
+	U16 point_source_ID;
+
+	F64 gps_time;
+	U16 rgb[4];
+	U8 wave_packet[29];
+
+	// LAS 1.4 only
+	U8 extended_point_type : 2;
+	U8 extended_scanner_channel : 2;
+	U8 extended_classification_flags : 4;
+	U8 extended_classification;
+	U8 extended_return_number : 4;
+	U8 extended_number_of_returns_of_given_pulse : 4;
+	I16 extended_scan_angle;
+
+	I32 num_extra_bytes;
+	U8* extra_bytes;
 };
 
 class LAStempWritePoint14

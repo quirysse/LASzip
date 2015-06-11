@@ -156,7 +156,7 @@ private:
   U32 number;
 };
 
-class LAStempReadPoint10
+class LAStempReadPoint10_old
 {
 public:
   I32 x;
@@ -186,6 +186,38 @@ public:
   F64 gps_time;
 };
 
+struct LAStempReadPoint10
+{
+	I32 X;
+	I32 Y;
+	I32 Z;
+	U16 intensity;
+	U8 return_number : 3;
+	U8 number_of_returns_of_given_pulse : 3;
+	U8 scan_direction_flag : 1;
+	U8 edge_of_flight_line : 1;
+	U8 classification;
+	I8 scan_angle_rank;
+	U8 user_data;
+	U16 point_source_ID;
+
+	F64 gps_time;
+	U16 rgb[4];
+	U8 wave_packet[29];
+
+	// LAS 1.4 only
+	U8 extended_point_type : 2;
+	U8 extended_scanner_channel : 2;
+	U8 extended_classification_flags : 4;
+	U8 extended_classification;
+	U8 extended_return_number : 4;
+	U8 extended_number_of_returns_of_given_pulse : 4;
+	I16 extended_scan_angle;
+
+	I32 num_extra_bytes;
+	U8* extra_bytes;
+};
+
 class LAStempReadPoint14
 {
 public:
@@ -212,9 +244,9 @@ public:
   inline void read(U8* item)
   {
     instream->getBytes(buffer, 30);
-    ((LAStempReadPoint10*)item)->x = ((LAStempReadPoint14*)buffer)->x;
-    ((LAStempReadPoint10*)item)->y = ((LAStempReadPoint14*)buffer)->y;
-    ((LAStempReadPoint10*)item)->z = ((LAStempReadPoint14*)buffer)->z;
+    ((LAStempReadPoint10*)item)->X = ((LAStempReadPoint14*)buffer)->x;
+    ((LAStempReadPoint10*)item)->Y = ((LAStempReadPoint14*)buffer)->y;
+    ((LAStempReadPoint10*)item)->Z = ((LAStempReadPoint14*)buffer)->z;
     ((LAStempReadPoint10*)item)->intensity = ((LAStempReadPoint14*)buffer)->intensity;
     if (((LAStempReadPoint14*)buffer)->number_of_returns_of_given_pulse > 7)
     {
